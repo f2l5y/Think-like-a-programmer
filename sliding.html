@@ -7,31 +7,54 @@
 </head>
 <style>
     .container{
-
+        width: fit-content;
         display: grid;
-        grid-template: 100px / repeat(3,100px);
-        grid-auto-rows: 100px;
+        grid-template-columns: repeat(3,200px);
+        grid-auto-rows: 200px;
         border: 2px solid green;
-        gap: 3px;
-    };
+        gap: 5px;
+        place-content   : center;
+        background-color: grey;
+        padding: 10px;
+        margin: auto;  
+    }
+
+    div > div{
+        border: 2px solid blue;
+        display: grid;
+        place-content: center;
+        font-size: 3rem;
+    }
+   
 
     .number{
         background-color: lightblue;
-
     }
 
-    div div:last-child{
-        background-color: gray;
+    .slider{
+        animation: slide 0.5s ease forwards;
     }
+
+    @keyframes slide {
+        from{
+            transform: translateX(0px);
+        }
+        to{
+            transform: translateX(200px);
+        }
+        
+    }
+   
 </style>
 <body>
-<div class="container">
-<div class="number"></div></div>
-<div class="number"></div></div>
-<div class="number"></div></div>
-<div class="number"></div></div>
-<div class="number"></div></div>
-<div class="free"></div></div>
-    
+<div class="container"> 
+    <div class="number"></div>
+    <div class="number"></div>
+    <div class="number"></div>
+    <div class="number"></div>
+    <div class="number"></div>
+</div>
+    *
 </body>
+<script src="./sliding.js"></script>
 </html>
