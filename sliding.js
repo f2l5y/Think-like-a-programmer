@@ -56,27 +56,28 @@ function randomizeGrid(){
 
 //create a constant loop that checks which grid quadrant is empty
 function findEmpty(){
-    //number of cells
-    const totalcell = 6;
     
     //array of all possible position
-    let filledcells = Array(totalcell).fill(false)
+    let occupied = new Set()
+    let defaultocc = new Set(['1 - 1', '1 - 2', '1 - 3', '2 - 1', '2 - 2', '2 - 3'])
 
     numeri.forEach(numero => {
         const computedStyle = getComputedStyle(numero);
         const gridRow = parseInt(computedStyle.gridRow)
         const gridColumn = parseInt(computedStyle.gridColumn)
-        const quadrantIndex = (gridRow - 1) * 3 + (gridColumn - 1); 
-        filledcells[quadrantIndex] = true;
+        occupied.add(`${gridRow} - ${gridColumn}`)
     
-        for (let i = 0; i < filledcells.length; i++) {
-            if (!filledcells[i]) {
-                console.log(`Empty quadrant is at position: ${i + 1}`); 
-                break;
-            }
-        }
     });
 
+    
+    defaultocc.forEach(item => {
+        if(!occupied.has(item)){
+            console.log(item)
+        }
+    })
+
+    
+    
 }
 
 randomizeGrid()
