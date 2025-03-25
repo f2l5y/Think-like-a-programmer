@@ -5,7 +5,7 @@ const numeri = document.querySelectorAll("div>div")
 
 //generate random number
 function randomNum (){
-    return (Math.floor(Math.random()*5)+1).toString()
+    return (Math.floor(Math.random()*8)+1).toString()
 }
 
 
@@ -41,7 +41,7 @@ function randomizeGrid(){
         
         while(!positionAssigned){
             const randomColumn = Math.floor(Math.random() * 3) + 1;
-            const randomRow = Math.floor(Math.random() * 2) + 1;
+            const randomRow = Math.floor(Math.random() * 3) + 1;
             const gridPosition = `${randomRow}-${randomColumn}`;
             if (!occupied.has(gridPosition)) {
                 item.style.gridColumn = randomColumn;
@@ -55,7 +55,7 @@ function randomizeGrid(){
 
 //create a constant loop that checks which grid quadrant is empty
 function findEmpty() {
-    let allPositions = new Set(["1-1", "1-2", "1-3", "2-1", "2-2", "2-3"]);
+    let allPositions = new Set(["1-1", "1-2", "1-3", "2-1", "2-2", "2-3","3-1","3-2","3-3"]);
     let occupied = new Set();
 
     numeri.forEach(numero => {
