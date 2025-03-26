@@ -159,9 +159,15 @@ numeri.forEach(numero => {
                 numero.style.gridColumn = emptyCol;
             
         }
-        checkOrder()});
+        checkOrder()
+    
+    counternumber += 1
+    counter.innerHTML = counternumber
+});
     });
 
+    let counter = document.querySelector("body > div:last-of-type span")
+    let counternumber = parseInt(document.querySelector("body > div:last-of-type span").textContent)
 
 
 
