@@ -75,10 +75,27 @@ function NotrandomizeGrid(){
                        t+=1;
                    } i+=1
            }
-
             
         }
   
+
+function checkOrder(){
+    numeri.forEach((numero) =>
+        {   let randomColumn = parseInt(getComputedStyle(numero).gridColumn)
+            let randomRow = parseInt(getComputedStyle(numero).gridRow)
+            if(parseInt(numero.textContent) === (randomRow-1)*3+randomColumn){
+                numero.style.backgroundColor = 'lightgreen'
+                numero.style.color = 'white'
+                return
+            }else{
+                numero.style.backgroundColor = 'lightblue'
+                numero.style.color = 'blue'
+
+            }
+        }
+    )
+
+}
 
 //create a constant loop that checks which grid quadrant is empty
 function findEmpty() {
@@ -142,8 +159,8 @@ numeri.forEach(numero => {
                 numero.style.gridColumn = emptyCol;
             
         }
+        checkOrder()});
     });
-});
 
 
 
