@@ -23,35 +23,62 @@ function checkarr(a,b){
 //looping through the divs to assign random numbers.
 //also add event listener to make them slide
 let arrdiv = []
-for(let numero of numeri){
-    let testo = randomNum().toString()
-    testo = checkarr(testo,arrdiv)
-    arrdiv.push(testo)
-    numero.textContent = testo
-}
+// for(let numero of numeri){
+//     let testo = randomNum().toString()
+//     testo = checkarr(testo,arrdiv)
+//     arrdiv.push(testo)
+//     numero.textContent = testo
+// }
 
 
 //the position of the div children needs to be randomized
-function randomizeGrid(){
+// function randomizeGrid(){
+//     const items = document.querySelectorAll("div > div")
+//     const occupied = new Set()
+
+//     items.forEach(item=>{
+//         let positionAssigned = false;
+        
+//         while(!positionAssigned){
+//             const randomColumn = Math.floor(Math.random() * 3) + 1;
+//             const randomRow = Math.floor(Math.random() * 3) + 1;
+//             const gridPosition = `${randomRow}-${randomColumn}`;
+//             if (!occupied.has(gridPosition)) {
+//                 item.style.gridColumn = randomColumn;
+//                 item.style.gridRow = randomRow;
+//                 occupied.add(gridPosition);
+//                 positionAssigned = true;
+//             }}
+//     })
+// }
+
+//not randomizedgrid
+function NotrandomizeGrid(){
     const items = document.querySelectorAll("div > div")
     const occupied = new Set()
 
-    items.forEach(item=>{
-        let positionAssigned = false;
-        
-        while(!positionAssigned){
-            const randomColumn = Math.floor(Math.random() * 3) + 1;
-            const randomRow = Math.floor(Math.random() * 3) + 1;
-            const gridPosition = `${randomRow}-${randomColumn}`;
-            if (!occupied.has(gridPosition)) {
-                item.style.gridColumn = randomColumn;
-                item.style.gridRow = randomRow;
-                occupied.add(gridPosition);
-                positionAssigned = true;
-            }}
-    })
-}
+   
+        let i=0
+           while(i<3){
+               const randomRow = i+1;
+                   let t=0
+                   while(t<3){
+                       const randomColumn = t + 1;
+                       const gridPosition = `${randomRow}-${randomColumn}`;
+                       items.forEach((item,index) =>{
+                           if (!occupied.has(gridPosition) && index == ((randomRow-1)*3+randomColumn)-1) {
+                               item.style.gridColumn = randomColumn;
+                               item.style.gridRow = randomRow;
+                              }
+                           
+                    })
+                       t+=1;
+                   } i+=1
+           }
 
+            
+        }
+  
 
 //create a constant loop that checks which grid quadrant is empty
 function findEmpty() {
@@ -121,6 +148,6 @@ numeri.forEach(numero => {
 
 
 
-randomizeGrid()
+NotrandomizeGrid()
 
 
