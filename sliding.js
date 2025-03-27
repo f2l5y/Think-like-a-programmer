@@ -84,7 +84,7 @@ function checkOrder(){
         {   let randomColumn = parseInt(getComputedStyle(numero).gridColumn)
             let randomRow = parseInt(getComputedStyle(numero).gridRow)
             if(parseInt(numero.textContent) === (randomRow-1)*3+randomColumn){
-                numero.style.backgroundColor = 'lightgreen'
+                numero.style.backgroundColor = 'rgb(0, 163, 11)'
                 numero.style.color = 'white'
                 return
             }else{
@@ -133,38 +133,57 @@ function isAdjacent(tileRow, tileCol, emptyRow, emptyCol) {
 }
 
 // Add click event listeners to tiles
-numeri.forEach(numero => {
-    numero.addEventListener('click', () => {
-        let emptyPos = findEmpty();
-        if (!emptyPos) return; // Prevents error if emptyPos is null
-
-        const computedStyle = getComputedStyle(numero);
-        const tileRow = parseInt(computedStyle.gridRow);
-        const tileCol = parseInt(computedStyle.gridColumn);
-
-        let emptyRow = emptyPos.row;
-        let emptyCol = emptyPos.col;
-
-        if (isAdjacent(tileRow, tileCol, emptyRow, emptyCol)) {
-            let deltaX = (emptyCol - tileCol) * 100; // 100% per grid cell
-            let deltaY = (emptyRow - tileRow) * 100;
-
-            // Apply transform for animation
-            numero.style.transform = `translate(${deltaX}%, ${deltaY}%)`;
-
-            // Wait for animation to complete before updating actual position
-            
-                numero.style.transform = ""; // Reset transform
-                numero.style.gridRow = emptyRow;
-                numero.style.gridColumn = emptyCol;
-            
-        }
-        checkOrder()
+    numeri.forEach(numero => {
+        numero.addEventListener('click', () => {
+            let emptyPos = findEmpty();
+            if (!emptyPos) return;
     
-    counternumber += 1
-    counter.innerHTML = counternumber
-});
+            const computedStyle = getComputedStyle(numero);
+            const tileRow = parseInt(computedStyle.gridRow);
+            const tileCol = parseInt(computedStyle.gridColumn);
+    
+            let emptyRow = emptyPos.row;
+            let emptyCol = emptyPos.col;
+    
+            if (isAdjacent(tileRow, tileCol, emptyRow, emptyCol)) {
+                let deltaX = (emptyCol - tileCol) * 100;
+                let deltaY = (emptyRow - tileRow) * 100;
+    
+                // Move tile using transform
+                numero.style.transition = "transform 0.3s ease";
+                numero.style.transform = `translate(${deltaX}%, ${deltaY}%)`;
+    
+                function onTransitionEnd(event) {
+                    if (event.propertyName !== "transform") return; // Ensure it's the transform property
+    
+                    numero.removeEventListener("transitionend", onTransitionEnd);
+    
+                    // Delay grid update slightly to avoid flicker
+                    setTimeout(() => {
+                        numero.style.gridRow = emptyRow;
+                        numero.style.gridColumn = emptyCol;
+                        checkOrder();
+    
+                        // Remove transform *after* grid position updates
+                        numero.style.transition = "none"; // Temporarily remove transition
+                        numero.style.transform = ""; // Reset transform
+    
+                        // Re-enable transition for next moves
+                        requestAnimationFrame(() => {
+                            numero.style.transition = "transform 0.3s ease";
+                        });
+                    }, 1); // Small delay ensures it updates in sync
+                }
+    
+                numero.addEventListener("transitionend", onTransitionEnd);
+            }
+    
+          
+            counternumber += 1;
+            counter.innerHTML = counternumber;
+        });
     });
+    
 
     let counter = document.querySelector("body > div:last-of-type span")
     let counternumber = parseInt(document.querySelector("body > div:last-of-type span").textContent)
