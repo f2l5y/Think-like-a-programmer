@@ -133,48 +133,59 @@ function isAdjacent(tileRow, tileCol, emptyRow, emptyCol) {
 }
 
 
-let counterSpan = document.querySelector("body > div:nth-last-of-type(2) span");
-let moveCounter = 0;
-const moveHistory = []; // Track last three positions of a tile
-const elementHistory = []; // Track the element being moved
+let counterSpan = document.querySelector("body > div:nth-last-of-type(2) span")
+let counternumber = parseInt(document.querySelector("body > div:nth-last-of-type(2) span").textContent)
+const moveHistory = []; // Array to track tiles' last three positions
+const elementHistory = [] //track the element that has been moved
+let moveCounter = Number(0);
 
-function trackMoves(previousPosition, newPosition, elementNumber) {
-    // If this is the first move, initialize moveHistory and elementHistory
+function trackMoves(previousPosition, newPosition,elementNumber) {
+
+    // If history is empty, initialize the first element
     if (moveHistory.length === 0) {
-        moveHistory.push(previousPosition); 
-        elementHistory.push(elementNumber);
+        moveHistory.push(previousPosition); // Start history with the previous position
+
     }
 
-    // Check if a different tile is moved
-    if (elementHistory[elementHistory.length - 1] !== elementNumber) {
-        // Reset history because a different tile was moved
-        moveHistory.length = 0; 
-        moveHistory.push(previousPosition);
-        elementHistory.length = 0; 
-        elementHistory.push(elementNumber);
+    // Get the latest history to compare
+    moveHistory.push(newPosition)
+    elementHistory.push(elementNumber)
+    let history = moveHistory; 
+    let history2 = elementHistory;
+
+    if(history2[0] !== history2[1] && history2.length > 1){
+        history[0]=previousPosition
+        history[1]=newPosition
     }
 
-    // Track the new position
-    moveHistory.push(newPosition);
-    elementHistory.push(elementNumber);
-
-    // Keep only last two positions
-    if (moveHistory.length > 2) {
-        moveHistory.shift();
-    }
-    if (elementHistory.length > 2) {
-        elementHistory.shift();
-    }
-
-    // Check if the move is a reversal
-    if (moveHistory.length === 2 && moveHistory[1] === moveHistory[0]) {
+    // Check if the move is a reversal (new position equals the previous position in the history)
+    if (history.length === 3 && history[2] === history[0] && history2[0] == history2[1]) {
         moveCounter--; // Decrement on reversal
+        counternumber = moveCounter;
+        counterSpan.innerHTML = counternumber.toString(); // Update the counter on the page
+        history.pop(); // Remove the last position (reversal move)
+        history.pop()
+
+        if(history2.length == 2){
+            history2.shift()
+        }
+      
     } else {
         moveCounter++; // Increment for a new move
-    }
+        counternumber = moveCounter;
+        counterSpan.innerHTML = counternumber.toString(); // Update the counter on the page
 
-    // Update the counter in the UI
-    counterSpan.innerHTML = moveCounter.toString();
+        if(history2.length == 2){
+            history2.shift()
+        }
+
+        // If history has 3 positions, remove the oldest one
+        if (history.length === 3) {
+            history.unshift(); 
+            history.unshift();
+        }
+
+    }
 }
 
 
