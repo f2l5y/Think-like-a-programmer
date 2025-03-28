@@ -185,8 +185,8 @@ function isAdjacent(tileRow, tileCol, emptyRow, emptyCol) {
     });
     
 
-    let counter = document.querySelector("body > div:last-of-type span")
-    let counternumber = parseInt(document.querySelector("body > div:last-of-type span").textContent)
+    let counter = document.querySelector("body > div:nth-last-of-type(2) span")
+    let counternumber = parseInt(document.querySelector("body > div:nth-last-of-type(2) span").textContent)
 
 
 
