@@ -156,6 +156,12 @@ function trackMoves(previousPosition, newPosition,elementNumber) {
     if(history2[0] !== history2[1] && history2.length > 1){
         history[0]=previousPosition
         history[1]=newPosition
+        history.pop()
+        history2.shift()
+        moveCounter++; // Increment for a new move
+        counternumber = moveCounter;
+        counterSpan.innerHTML = counternumber.toString(); // Update the counter on the page
+        return
     }
 
     // Check if the move is a reversal (new position equals the previous position in the history)
