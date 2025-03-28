@@ -132,6 +132,52 @@ function isAdjacent(tileRow, tileCol, emptyRow, emptyCol) {
     );
 }
 
+
+let counterSpan = document.querySelector("body > div:nth-last-of-type(2) span");
+let moveCounter = 0;
+const moveHistory = []; // Track last three positions of a tile
+const elementHistory = []; // Track the element being moved
+
+function trackMoves(previousPosition, newPosition, elementNumber) {
+    // If this is the first move, initialize moveHistory and elementHistory
+    if (moveHistory.length === 0) {
+        moveHistory.push(previousPosition); 
+        elementHistory.push(elementNumber);
+    }
+
+    // Check if a different tile is moved
+    if (elementHistory[elementHistory.length - 1] !== elementNumber) {
+        // Reset history because a different tile was moved
+        moveHistory.length = 0; 
+        moveHistory.push(previousPosition);
+        elementHistory.length = 0; 
+        elementHistory.push(elementNumber);
+    }
+
+    // Track the new position
+    moveHistory.push(newPosition);
+    elementHistory.push(elementNumber);
+
+    // Keep only last two positions
+    if (moveHistory.length > 2) {
+        moveHistory.shift();
+    }
+    if (elementHistory.length > 2) {
+        elementHistory.shift();
+    }
+
+    // Check if the move is a reversal
+    if (moveHistory.length === 2 && moveHistory[1] === moveHistory[0]) {
+        moveCounter--; // Decrement on reversal
+    } else {
+        moveCounter++; // Increment for a new move
+    }
+
+    // Update the counter in the UI
+    counterSpan.innerHTML = moveCounter.toString();
+}
+
+
 // Add click event listeners to tiles
     numeri.forEach(numero => {
         numero.addEventListener('click', () => {
@@ -171,7 +217,7 @@ function isAdjacent(tileRow, tileCol, emptyRow, emptyCol) {
                         // Re-enable transition for next moves
                         requestAnimationFrame(() => {
                             numero.style.transition = "transform 0.3s ease";
-                        });
+                        });  trackMoves(`${tileRow}-${tileCol}`, `${emptyRow}-${emptyCol}`,numero.textContent);
                     }, 1); // Small delay ensures it updates in sync
                 }
     
@@ -179,14 +225,11 @@ function isAdjacent(tileRow, tileCol, emptyRow, emptyCol) {
             }
     
           
-            counternumber += 1;
-            counter.innerHTML = counternumber;
+           
         });
     });
     
 
-    let counter = document.querySelector("body > div:nth-last-of-type(2) span")
-    let counternumber = parseInt(document.querySelector("body > div:nth-last-of-type(2) span").textContent)
 
 
 
